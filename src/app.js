@@ -20,7 +20,7 @@ const bot = new TropoBot(botConfig);
 
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 app.post('/sms', (req, res) => {
 

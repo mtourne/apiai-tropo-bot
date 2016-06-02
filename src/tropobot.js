@@ -46,12 +46,12 @@ module.exports = class TropoBot {
             console.log("body", req.body);
         }
 
-        if (req.body && req.body.From && req.body.Body) {
-            let chatId = req.body.From;
-            let messageText = req.body.Body;
+        if (req.body && req.body.session && req.body.session.from && req.body.session.initialText) {
+            let chatId = req.body.session.from.id;
+            let messageText = req.body.session.initialText;
 
             console.log(chatId, messageText);
-            
+
             if (messageText) {
                 if (!this._sessionIds.has(chatId)) {
                     this._sessionIds.set(chatId, uuid.v1());
@@ -68,12 +68,18 @@ module.exports = class TropoBot {
 
                         if (TropoBot.isDefined(responseText)) {
                             console.log('Response as text message');
-                            // TODO response
+
+                            res.status(200).json({
+                                tropo: [{say: {value: responseText}}]
+                            });
+
                         } else {
                             console.log('Received empty speech');
+                            return res.status(400).end('Received empty speech');
                         }
                     } else {
-                        console.log('Received empty result')
+                        console.log('Received empty result');
+                        return res.status(400).end('Received empty result');
                     }
                 });
 
