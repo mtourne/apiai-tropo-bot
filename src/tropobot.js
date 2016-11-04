@@ -5,7 +5,7 @@ const uuid = require('node-uuid');
 const request = require('request');
 
 // change to turn on debug
-const devmode = true;
+const devmode = false;
 
 module.exports = class TropoBot {
 
