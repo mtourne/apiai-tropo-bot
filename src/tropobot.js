@@ -74,6 +74,8 @@ module.exports = class TropoBot {
             this._sessionIds.set(chatId, uuid.v1());
         }
 
+        // change the source, since the originalRequest looks very different
+        originalRequest.source = 'tropo_initiate';
         let apiaiRequest = this._apiaiService.textRequest(
           messageText,
           { sessionId: this._sessionIds.get(chatId),
