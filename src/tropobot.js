@@ -49,6 +49,11 @@ module.exports = class TropoBot {
         console.log("body", req.body);
       }
 
+      var originalRequest = {
+        source: 'tropo',
+        data: req.body
+      };
+
       // case where responding to a REST call sent to tropo
       if (req.body
           && req.body.session
@@ -71,7 +76,9 @@ module.exports = class TropoBot {
 
         let apiaiRequest = this._apiaiService.textRequest(
           messageText,
-            { sessionId: this._sessionIds.get(chatId) });
+          { sessionId: this._sessionIds.get(chatId),
+            originalRequest: originalRequest
+          });
 
         apiaiRequest.on('response', (response) => {
           if (TropoBot.isDefined(response.result)) {
@@ -127,7 +134,9 @@ module.exports = class TropoBot {
 
           let apiaiRequest = this._apiaiService.textRequest(
             messageText,
-            { sessionId: this._sessionIds.get(chatId) });
+            { sessionId: this._sessionIds.get(chatId),
+              originalRequest: originalRequest
+            });
 
           apiaiRequest.on('response', (response) => {
             if (TropoBot.isDefined(response.result)) {
